@@ -5,7 +5,6 @@ import random
 from PIL import Image
 from tqdm import tqdm
 
-
 class Train:
     def __init__(self, M):
         self.n = 64 * 64 * 3
