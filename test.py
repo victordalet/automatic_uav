@@ -1,19 +1,16 @@
 import math
-import random
 
 from PIL import Image
 from djitellopy import Tello
-from pynput import keyboard
 import cv2
 import threading
 import json
-import sys
 
 from map import map
 
 
 class AutoDrone:
-    def __init__(self, map, xd, yd, xa, ya):
+    def __init__(self, map):
         self.weight1 = self.get_data("assets/data/w1.json")
         self.weight2 = self.get_data("assets/data/w2.json")
         self.name = "UAV"
@@ -33,10 +30,7 @@ class AutoDrone:
         self.deg = 0  # for check the position of deg
         self.change_deg = [0, 180, 270, 90]
         self.where_is = 0  # for know the position in the lst of way
-        self.x_depart = xd
-        self.y_depart = yd
-        self.x_arrivee = xa
-        self.y_arrivee = ya
+        self.find_position() # for know the position of begin and end of parcour
         self.parcours()
         print(self.lst_position)
         self.video_loop()
@@ -80,6 +74,17 @@ class AutoDrone:
                             self.deg = 0 + (self.deg - 360)
             except:
                 print("")
+
+    def find_position(self):
+        for i in range(len(self.map)):
+            for j in range(len(self.map[0])):
+                if self.map[i][j] == 2:
+                    self.x_depart = i
+                    self.y_depart = j
+                if self.map[i][j] == 3:
+                    self.x_arrivee = i
+                    self.y_arrivee = j
+
 
     def parcours(self):
         self.lst_position = [0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 3, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0]
@@ -127,4 +132,4 @@ class AutoDrone:
         return lst
 
 
-AutoDrone(map, 4, 14, 3, 5)
+AutoDrone(map)
